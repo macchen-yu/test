@@ -4,9 +4,9 @@
 #include <stdbool.h>
 #define NUM_CARDS 52
 //#define NUM_HANDS 1000000
-#define NUM_HANDS 33446140
+#define NUM_HANDS 13378456
 #define HAND_SIZE 7
-#define NUM_PLAYERS 4
+#define NUM_PLAYERS 10
 #define HOLE_CARDS 2
 #define COMMUNITY_CARDS 5
 
@@ -73,6 +73,15 @@ bool hasFlush(int* suitCount) {
         if (suitCount[i] >= 5) {
             return true;
         }
+        //if (suitCount[i] == 7) {
+        //    return true;
+        //}
+        //else if (suitCount[i] == 6) {
+        //    return true;
+        //}
+        //else if (suitCount[i] == 5) {
+        //    return true;
+        //}
 
     }
     return false;
@@ -118,7 +127,7 @@ bool hasStraight(Card* handByPips) {
     }
 
     // 對點數進行排序，將 -1 排到最前面
-    qsort(pips, HAND_SIZE, sizeof(int), compareByPips);
+    // /////////qsort(pips, HAND_SIZE, sizeof(int), compareByPips);
 
     // 檢查是否有五張連續的牌
     // 檢查是否有五張67連續的牌
@@ -209,10 +218,11 @@ void evaluateHand(Card* handByPips, int* counts) {
     else if (!hasFlush(suitCount)) {
         int matches[3]; //統計 4條 3張 2張
         countCardPips(handByPips, HAND_SIZE, matches);
-        if (hasStraight(handByPips)) {
+
+        if (hasStraight(handByPips)) {//順子
             counts[5] += 1;
         }
-        if (matches[0] != 0) {
+        else if (matches[0] != 0) {//4條
             counts[2] += 1;
         }
         else if (matches[1] != 0 && matches[2] != 0) { //3張 2張各有一對
